@@ -1,14 +1,32 @@
-import { UserSignIn, UserSignUp } from "./dtos/user.dtos.ts";
+import jwt, { Secret }from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
+
+import { UserSignIn, UserSignUp, UserGet } from "./dtos/user.dtos.ts";
 import userModel from "../../models/user.ts";
 
 export default class Service {
-    async signUp({ name, email, password } : UserSignUp): Promise<any> {
+    async signUp({ name, email, password, role } : UserSignUp): Promise<any> {
       try {
-          var findUserEmail = await userModel.findOne({email});
+          const findUserEmail = await userModel.findOne({email});
           if (findUserEmail) return { error: 'email_already_exists'};
 
-          
+          const salt = await bcrypt.genSalt(10);
+          const hash = await bcrypt.hash(password, salt);
 
+          const user = new userModel({
+            password: hash,
+            name, 
+            email,
+            role
+          });
+          user.save();
+
+          const payload = {
+            id: user._id
+          }
+
+          const token = jwt.sign(payload,  process.env.JWT as Secret, { expiresIn : '60 days'})
+          return { token }
       } catch (err) {
         console.error(err);
         return { error: 'internal_error' };
@@ -16,8 +34,29 @@ export default class Service {
     }
     async signIn({ email, password }: UserSignIn): Promise<any> {
       try {
+        const findUser = await userModel.findOne({email});
+        if (!findUser) return { error: 'user_not_found'};
 
-        return { email, password };
+        var isMatch = await bcrypt.compare(password, findUser.password);
+        if (!isMatch)  return { error: "invalid_credentials" };
+
+        const payload = {
+          id: findUser._id
+        }
+
+        const token = jwt.sign(payload, process.env.JWT as Secret, { expiresIn : '60 days'})
+        return { token }
+      } catch (err) {
+        return { error: 'internal_error' };
+      }
+    }
+
+    async getUser({ authorization }: UserGet): Promise<any> {
+      try {
+        const findUser = await userModel.findById(authorization).select('-password');
+        if (!findUser) return { error: 'user_not_found'};
+        return { user: findUser }
+
       } catch (err) {
         return { error: 'internal_error' };
       }

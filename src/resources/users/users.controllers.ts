@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-
 import handleRequest from '../handleRequest.ts';
 import Service from './users.service.ts';
 
@@ -10,11 +9,15 @@ export default class UsersController {
     this.service = new Service();
   }
 
-  async signUp(req: Request, res: Response){
+  signUp = async (req: Request, res: Response) => {
     return handleRequest(req, res, this.service.signUp);
-  };
+  }
 
-  async signIn(req: Request, res: Response){
+  signIn = async (req: Request, res: Response) => {
     return handleRequest(req, res, this.service.signIn);
-  };
+  }
+
+  getUser = async (req: Request, res: Response) => {
+    return handleRequest(req, res, this.service.getUser);
+  }
 }

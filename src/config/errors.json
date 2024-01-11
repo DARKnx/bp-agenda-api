@@ -6,5 +6,13 @@
     "email_already_exists": {
         "message": "Email already exists.",
         "statusCode": 401
+    },
+    "user_not_found":{
+        "message": "User not found.",
+        "statusCode": 404
+    },
+    "invalid_credentials": {
+        "message": "Credenciais invalidas.",
+        "statusCode": 401
     }
 }
