@@ -1,14 +1,20 @@
-export default class Service {
-    async signUp({ name, email, password }: { name: string; email: string; password: string }): Promise<any> {
-      try {
+import { UserSignIn, UserSignUp } from "./dtos/user.dtos.ts";
+import userModel from "../../models/user.ts";
 
-        return { success: true  };
+export default class Service {
+    async signUp({ name, email, password } : UserSignUp): Promise<any> {
+      try {
+          var findUserEmail = await userModel.findOne({email});
+          if (findUserEmail) return { error: 'email_already_exists'};
+
+          
+
       } catch (err) {
         console.error(err);
         return { error: 'internal_error' };
       }
     }
-    async signIn({ email, password }: { email: string; password: string }): Promise<any> {
+    async signIn({ email, password }: UserSignIn): Promise<any> {
       try {
 
         return { email, password };
