@@ -10,9 +10,8 @@ import cors from 'cors';
 import connectDB from './database/connect.ts';
 import { router } from './routes/index.ts';
 import config from './config/default.ts';
-import Errors from './util/error.ts';
+import sendError from './util/error.ts';
 
-const { sendError } = new Errors();
 export const app: Application = express();
 connectDB();
 
