@@ -28,7 +28,7 @@ import config from '../config/default.ts';
         msg: error.message,
       });
     } catch (error) {
-      console.error(error);
+//      console.error(error);
       res.status(500).json({
         code: 500,
         msg: 'Internal Server Error',

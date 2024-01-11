@@ -7,5 +7,6 @@ const service = new usersController();
 const usersRouter = Router();
 
 usersRouter.post("/signup", service.signUp);
+usersRouter.post("/signin", service.signIn);
 
 export default usersRouter;

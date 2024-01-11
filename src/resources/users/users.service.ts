@@ -10,9 +10,9 @@ export default class Service {
     }
     async signIn({ email, password }: { email: string; password: string }): Promise<any> {
       try {
-        return { success: true };
+
+        return { email, password };
       } catch (err) {
-        console.error(err);
         return { error: 'internal_error' };
       }
     }

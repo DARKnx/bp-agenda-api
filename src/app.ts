@@ -27,11 +27,3 @@ app.use(cors({
 app.use(express.json());
 
 app.use('/v1', router);
-
-app.use((err: any, req: Request, res: Response) => {
-  log.error(`An error occurred at route: general route`);
-  console.log(err);
-  return sendError(res, 'internal_error', {
-    logger: false
-  });
-});
