@@ -11,5 +11,24 @@ export interface UserSignUp {
 }
 
 export interface UserGet {
-    authorization: string
+    authorization: string;
 }
+
+export interface  UserOptions{
+    authorization: string;
+    role?: 'normal' | 'admin' | 'consultor'
+}
+
+type User = {
+    password: string;
+    resume: string;
+    email: string;
+    role: string; 
+    name: string;
+}
+
+export interface UserUpdate {
+    authorization: string;
+    data: Partial<User>
+    
+}   

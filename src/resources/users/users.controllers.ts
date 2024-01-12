@@ -20,4 +20,14 @@ export default class UsersController {
   getUser = async (req: Request, res: Response) => {
     return handleRequest(req, res, this.service.getUser);
   }
+
+  getAllUser = async (req: Request, res: Response) => {
+    return handleRequest(req, res, this.service.getAllUser);
+  }
+  deleteUser = async (req: Request, res: Response) => {
+    return handleRequest(req, res, this.service.deleteUser);
+  }
+  updateUser = async (req: Request, res: Response) => {
+    return handleRequest(req, res, this.service.updateUser);
+  }
 }

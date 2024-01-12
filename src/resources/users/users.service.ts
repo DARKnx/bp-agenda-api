@@ -1,7 +1,7 @@
 import jwt, { Secret }from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
-import { UserSignIn, UserSignUp, UserGet } from "./dtos/user.dtos.ts";
+import { UserSignIn, UserSignUp, UserGet, UserOptions, UserUpdate} from "./dtos/user.dtos.ts";
 import createHistoric from '../../util/createHistoric.ts';
 import userModel from "../../models/user.ts";
 
@@ -58,6 +58,39 @@ export default class Service {
         const findUser = await userModel.findById(authorization).select('-password');
         if (!findUser) return { error: 'user_not_found'};
         return { user: findUser }
+
+      } catch (err) {
+        return { error: 'internal_error' };
+      }
+    }
+
+    async getAllUser({ authorization, role }: UserOptions): Promise<any> {
+      try {
+          return await userModel.find(role ? {role} : {}).select('-password').sort({date: -1});
+      } catch (err) {
+        return { error: 'internal_error' };
+      }
+    }
+
+    async updateUser({data, authorization}: UserUpdate): Promise<any> {
+      try {
+        const findUser = await userModel.findById(authorization);
+        if (!findUser) return { error: "user_not_found"};
+
+        const user = await userModel.findByIdAndUpdate(authorization, { $set: { ...data }}, { new: true}).select('-password');
+        createHistoric({description: `Atualizou os dados *${Object.keys(data as any).join(', ')}* da sua conta.`, author: authorization})
+        return { user }; 
+      } catch (err) {
+        return { error: 'internal_error' };
+      }
+    }
+    async deleteUser({authorization }: UserUpdate): Promise<any> {
+      try {
+        const findUser = await userModel.findById(authorization);
+        if (!findUser) return { error: "user_not_found"};
+
+        await userModel.findByIdAndDelete(authorization);
+        return {}; 
 
       } catch (err) {
         return { error: 'internal_error' };

@@ -19,7 +19,6 @@ const formatMessage = (message: string): string => {
 const createHistoric = async ({ description, author }: Historic): Promise<void> => {
     try {
         const formattedDescription = formatMessage(description);
-        console.log(formattedDescription)
 
         const historic = new historicModel({
             description: formattedDescription,
@@ -28,7 +27,7 @@ const createHistoric = async ({ description, author }: Historic): Promise<void> 
 
         await historic.save();
     } catch (error) {
-        console.log(error);
+//       console.log(error);
     }
 }
 

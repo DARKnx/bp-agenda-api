@@ -45,7 +45,7 @@ export default class Service {
         if (!findEvent) return { error: "event_not_found"};
 
         const event = await eventModel.findByIdAndUpdate(id, { $set: { ...data }}, { new: true});
-        createHistoric({description: `Atualizou os dados *${Object.keys(data as any).join('')}* do evento *${findEvent.name}*.`, author: authorization})
+        createHistoric({description: `Atualizou os dados *${Object.keys(data as any).join(', ')}* do evento *${findEvent.name}*.`, author: authorization})
         return { event }; 
       } catch (err) {
         return { error: 'internal_error' };
