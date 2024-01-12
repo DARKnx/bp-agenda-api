@@ -1,8 +1,9 @@
 import { Event, EventUpdate } from "./dtos/events.dtos.ts";
+import createHistoric from "../../util/createHistoric.ts";
 import eventModel from '../../models/event.ts';
 
 export default class Service {
-    async create({ description, consultant, startDate, endDate, name, client} : Event): Promise<any> {
+    async create({ description, consultant, startDate, endDate, name, client, authorization} : Event): Promise<any> {
       try {
          const event = new eventModel({
             description,
@@ -13,6 +14,8 @@ export default class Service {
             name,
          })
          await event.save();
+
+        createHistoric({description: `Criou um evento com o consultor *${consultant.name}*, iniciando em %${startDate}% e finalizando as %${endDate}%.`, author: authorization})
 
          return event;
       } catch (err) {

@@ -4,6 +4,7 @@ export type User = {
 }
 
 export interface Event {
+    authorization: string; 
     description?: string;
     consultant: User;
     startDate: Date;
