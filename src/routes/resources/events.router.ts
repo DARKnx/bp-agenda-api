@@ -6,10 +6,10 @@ import auth from '../../middlewares/auth.ts'
 const service = new EventsController();
 const eventsRouter = Router();
 
-eventsRouter.delete("/delete", service.delete);
-eventsRouter.post("/create", service.create);
-eventsRouter.get("/get-all", service.getAll);
-eventsRouter.put("/update", service.update);
-eventsRouter.get("/get", service.get);
+eventsRouter.delete("/delete", auth, service.delete);
+eventsRouter.post("/create", auth, service.create);
+eventsRouter.get("/get-all", auth, service.getAll);
+eventsRouter.put("/update", auth, service.update);
+eventsRouter.get("/get", auth, service.get);
 
 export default eventsRouter;
