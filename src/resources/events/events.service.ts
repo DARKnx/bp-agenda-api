@@ -39,22 +39,24 @@ export default class Service {
         return { error: 'internal_error' };
       }
     }
-    async update({ id, data }: EventUpdate): Promise<any> {
+    async update({ id, data, authorization}: EventUpdate): Promise<any> {
       try {
         const findEvent = await eventModel.findById(id);
         if (!findEvent) return { error: "event_not_found"};
 
         const event = await eventModel.findByIdAndUpdate(id, { $set: { ...data }}, { new: true});
+        createHistoric({description: `Atualizou os dados *${Object.keys(data as any).join('')}* do evento *${findEvent.name}*.`, author: authorization})
         return { event }; 
       } catch (err) {
         return { error: 'internal_error' };
       }
     }
-    async delete({ id }: EventUpdate): Promise<any> {
+    async delete({ id, authorization }: EventUpdate): Promise<any> {
       try {
         const findEvent = await eventModel.findById(id);
         if (!findEvent) return { error: "event_not_found"};
 
+        createHistoric({description: `Apagou o evento *${findEvent.name}*`, author: authorization})
         await eventModel.findByIdAndDelete(id);
         return {}; 
 

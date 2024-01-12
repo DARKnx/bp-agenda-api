@@ -3,7 +3,7 @@ import formatDate from "./formatDate.ts";
 
 interface Historic {
     description: string;
-    author: string;
+    author?: string;
 }
 const formatMessage = (message: string): string => {
     const parts = message.split('%'); 

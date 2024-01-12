@@ -2,6 +2,7 @@ import jwt, { Secret }from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
 import { UserSignIn, UserSignUp, UserGet } from "./dtos/user.dtos.ts";
+import createHistoric from '../../util/createHistoric.ts';
 import userModel from "../../models/user.ts";
 
 export default class Service {
@@ -24,7 +25,7 @@ export default class Service {
           const payload = {
             id: user._id
           }
-
+          createHistoric({description: `Efetuou um cadastro pela primeira vez`, author: user._id as any})
           const token = jwt.sign(payload,  process.env.JWT as Secret, { expiresIn : '60 days'})
           return { token }
       } catch (err) {
@@ -44,6 +45,7 @@ export default class Service {
           id: findUser._id
         }
 
+        createHistoric({description: `Efetuou um login.`, author: findUser._id as any})
         const token = jwt.sign(payload, process.env.JWT as Secret, { expiresIn : '60 days'})
         return { token }
       } catch (err) {
