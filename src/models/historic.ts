@@ -10,6 +10,9 @@ const HistoricSchema = new mongoose.Schema({
   },
   description:{
     type: String
+  },
+  author:{
+    type: String
   }
 });
 
