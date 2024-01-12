@@ -14,5 +14,9 @@
     "invalid_credentials": {
         "message": "Credenciais invalidas.",
         "statusCode": 401
+    },
+    "event_not_found":{
+        "message": "Event not found.",
+        "statusCode": 404
     }
 }
