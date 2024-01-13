@@ -35,6 +35,7 @@ export default class Service {
     }
     async signIn({ email, password }: UserSignIn): Promise<any> {
       try {
+        console.log(email, password)
         const findUser = await userModel.findOne({email});
         if (!findUser) return { error: 'user_not_found'};
 
@@ -49,6 +50,7 @@ export default class Service {
         const token = jwt.sign(payload, process.env.JWT as Secret, { expiresIn : '60 days'})
         return { token }
       } catch (err) {
+        console.log(err)
         return { error: 'internal_error' };
       }
     }
