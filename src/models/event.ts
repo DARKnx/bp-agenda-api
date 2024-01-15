@@ -33,6 +33,9 @@ const EventSchema = new mongoose.Schema({
     id:{
       type: String
     },
+  },
+  status:{
+    type: String
   }
 });
 

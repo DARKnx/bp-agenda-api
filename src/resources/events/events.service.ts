@@ -1,9 +1,9 @@
-import { Event, EventUpdate } from "./dtos/events.dtos.ts";
+import { Event, EventUpdate, EventsBrokerGet } from "./dtos/events.dtos.ts";
 import createHistoric from "../../util/createHistoric.ts";
 import eventModel from '../../models/event.ts';
 
 export default class Service {
-    async create({ description, consultant, startDate, endDate, name, client, authorization} : Event): Promise<any> {
+    async create({ description, consultant, startDate, endDate, name, client, authorization, status} : Event): Promise<any> {
       try {
          const event = new eventModel({
             description,
@@ -11,6 +11,7 @@ export default class Service {
             startDate,
             endDate,
             client,
+            status,
             name,
          })
          await event.save();
@@ -39,6 +40,27 @@ export default class Service {
         return { error: 'internal_error' };
       }
     }
+    async getBrokerSchedule({ authorization, id, date }: EventsBrokerGet): Promise<any> {
+      try {
+        const isoDate = new Date(date);
+        isoDate.setHours(0, 0, 0, 0);
+    
+        const startOfDay = new Date(isoDate);
+        const endOfDay = new Date(isoDate);
+        endOfDay.setDate(endOfDay.getDate() + 1);
+        endOfDay.setHours(0, 0, 0, 0);
+    
+        const events = await eventModel.find().sort({ sort: -1 });
+        const filteredEvents = events.filter(x => x.consultant?.id === id && (x.startDate || '') >= startOfDay && (x.endDate || '') < endOfDay);
+    
+        return filteredEvents;
+      } catch (err) {
+        console.error(err);
+        return { error: 'internal_error' };
+      }
+    }
+    
+    
     async update({ id, data, authorization}: EventUpdate): Promise<any> {
       try {
         const findEvent = await eventModel.findById(id);

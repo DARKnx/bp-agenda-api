@@ -6,6 +6,7 @@ import auth from '../../middlewares/auth.ts'
 const service = new EventsController();
 const eventsRouter = Router();
 
+eventsRouter.post("/broker-schedule", auth, service.getBrokerSchedule);
 eventsRouter.delete("/delete", auth, service.delete);
 eventsRouter.post("/create", auth, service.create);
 eventsRouter.get("/get-all", auth, service.getAll);

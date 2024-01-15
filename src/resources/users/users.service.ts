@@ -68,17 +68,17 @@ export default class Service {
 
     async getAllUser({ authorization, role }: UserOptions): Promise<any> {
       try {
-          return await userModel.find(role ? {role} : {}).select('-password').sort({date: -1});
+          return await userModel.find(role ? {} : { role: 'corretor'}).select('-password').sort({date: -1});
       } catch (err) {
         return { error: 'internal_error' };
       }
     }
 
-    async updateUser({data, authorization}: UserUpdate): Promise<any> {
+    async updateUser({data, authorization, id }: UserUpdate): Promise<any> {
       try {
+        if (id) authorization = id;
         const findUser = await userModel.findById(authorization);
         if (!findUser) return { error: "user_not_found"};
-
         const user = await userModel.findByIdAndUpdate(authorization, { $set: { ...data }}, { new: true}).select('-password');
         createHistoric({description: `Atualizou os dados *${Object.keys(data as any).join(', ')}* da sua conta.`, author: authorization})
         return { user }; 
@@ -86,8 +86,9 @@ export default class Service {
         return { error: 'internal_error' };
       }
     }
-    async deleteUser({authorization }: UserUpdate): Promise<any> {
+    async deleteUser({authorization, id}: UserUpdate): Promise<any> {
       try {
+        if (id) authorization = id;
         const findUser = await userModel.findById(authorization);
         if (!findUser) return { error: "user_not_found"};
 

@@ -16,7 +16,7 @@ export interface UserGet {
 
 export interface  UserOptions{
     authorization: string;
-    role?: 'normal' | 'admin' | 'consultor'
+    role?: 'cliente' | 'admin' | 'corretor'
 }
 
 type User = {
@@ -29,6 +29,7 @@ type User = {
 
 export interface UserUpdate {
     authorization: string;
-    data: Partial<User>
+    data: Partial<User>;
+    id?: string;
     
 }   

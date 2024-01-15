@@ -25,4 +25,7 @@ export default class EventsController {
   delete = async (req: Request, res: Response) => {
     return handleRequest(req, res, this.service.delete);
   }
+  getBrokerSchedule = async (req: Request, res: Response) => {
+      return handleRequest(req, res, this.service.getBrokerSchedule);
+    }
 }

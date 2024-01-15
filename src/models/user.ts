@@ -24,6 +24,13 @@ const UserSchema = new mongoose.Schema({
   },
   resume:{
     type: String
+  },
+  meetingPreference:{
+    type: String
+  },
+  schedulingWithoutRequest:{
+    type: String,
+    default: 'sim'
   }
 });
 
