@@ -5,8 +5,11 @@
   "type": "module",
   "main": "dist/server.js",
   "scripts": {
-    "start": "nodemon src/server.ts",
-    "dev": "nodemon -x ts-node src/server.ts"
+    "start": "node src/server.ts",
+    "dev": "nodemon -x ts-node src/server.ts",
+    "build": "tsc",
+    "docker:build": "docker build -t reserva-bp .",
+    "docker:run": "docker run -p 3000:3000 reserva-bp"
   },
   "author": "https://github.com/DARKnx",
   "license": "ISC",

@@ -3,7 +3,7 @@ import https from 'https';
 import log from 'gulog';
 import fs from 'fs';
 
-import config from './config/default.js';
+import config from './config/default.ts';
 import { app } from './app.ts';
 
 log.setup({
